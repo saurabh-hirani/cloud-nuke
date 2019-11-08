@@ -54,9 +54,11 @@ func newSession(region string) *session.Session {
 func retryDescribeRegions() (*ec2.DescribeRegionsOutput, error) {
 	for i := 0; i < len(OptInNotRequiredRegions); i++ {
 		region := OptInNotRequiredRegions[rand.Intn(len(OptInNotRequiredRegions))]
+		fmt.Printf("test: checking region - %s\n", region)
 		svc := ec2.New(newSession(region))
 		regions, err := svc.DescribeRegions(&ec2.DescribeRegionsInput{})
 		if err != nil {
+			fmt.Printf("test: got error - %s\n", err.Error())
 			continue
 		}
 		return regions, nil
